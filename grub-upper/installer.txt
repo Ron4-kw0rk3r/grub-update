@@ -1,0 +1,122 @@
+# ############ pasos para poder de reparar el grub ############### 
+
+introduccion 
+
+son pasos los cuales tiene una importancia tremendamente grande ya sea cuando actualizas el sistema
+y por defecto el grub o el boot por defecto es corrompido por el sistema windows dejando completamente
+sin funcion al dual boot que tiene el grub de linux
+
+
+
+# pasos para poder de solucionar el problema
+si el grub no funciona y solo arranca windows 
+
+preparar un live de imagen de linux (si es necesario la misma distro que se tiene instalada)
+
+# procediendo a reparar el grub 
+
+
+
+para ello se inicia el boot con el live dentro 
+inicia una terminal
+
+comandos @@@@@@@ 
+
+
+$ lsblk -l 
+
+de este modo se encuentra la particion que tiene instalado linux 
+
+# opcional
+# en caso de ser un btrfs 
+tambien el comando imprimira el tipo de sistema de archivos que tiene dicha particion
+
+
+# opcional 2 
+
+$ duf 
+
+# con este comando se imprime la informacion de las particiones mas detallada mente el cual tambien se presentaran si la
+particion esta montada
+
+
+# procedimiento 
+
+
+con el cual ya ubicada cada particion se tiene montar la particion en la ubicacion correspondiente ... 
+
+# lo del montado en la ubicacion /mnt es completamente opcional siendo que esta ubicacion es para este tipo de tareas
+
+
+$ sudo mount -o subvol=@  /dev/sdaX	 /mnt
+
+
+# -o argumento de salida que interprete el encriptado de @ como un subvolumen 
+
+$ sudo mount /dev /mnt/dev --bind
+$ sudo mount /proc /mnt/proc --bind
+$ sudo mount /sys /mnt/sys --bind
+
+
+# inicia session como usuario root
+
+
+sudo chroot  /mnt 
+
+# fase final ...
+
+
+$ # grub-install /dev/sda
+
+$ # grub-mkconfig -o /boot/grub/grub.cfg
+
+# si este paso sale correctamente bien  la fase a finalizado...
+
+# si el error persiste y como resultado sale en el output de la terminal 
+
+grub-prober :: mounted /dev ? 
+
+es un error el cual no se pudo de localizar la particion ya montada anteriormente
+el cual no pudo de actualizar con ello el problema seguira 
+
+$ exit
+$ reboot
+
+############### alternativa ###############
+
+
+declarar el boot mediante el inicio del grub 
+# si el formato del sistema es btrfs (sistema encriptado)
+
+grub> ls (hd0, ?) 
+grub> ls (hd0, ?) /@/boot/
+grub> ls (hd0, ?) /@/
+
+grub> set root=(hd0, ?)
+
+grub> linux (hd0,?)/@/boot/vmlinux-???
+grub> initrd (hd0,?)/@/boot/vmlinux-???.?
+grub> boot
+
+#########################################################################################
+########    el proceso es el mismo en caso de tener un sistema con ext4         #########
+#########################################################################################
+
+sudo mount /dev/sdPX  /mnt
+
+sudo mount /proc /mnt/proc --bind
+sudo mount /sys /mnt/sys --bind
+sudo mount /dev /mnt/dev --bind
+
+sudo chroot /mnt 
+
+
+grub-install /dev/sda 
+
+update-grub /dev/sda
+
+fdisk -l /dev/sdPX
+
+exit 
+reboot
+

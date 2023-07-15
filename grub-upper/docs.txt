@@ -1,0 +1,19 @@
+la verdad existe una variedad bastante grande por varios sitios en la red
+
+tambien algunas palabras clave
+
+fix grub repair
+
+fix grub from live usb
+
+reparar el grub de partida inicial por el que un sistema (windows) destruya el boot por defecto 
+no es el fin del sistema que se tenia por defecto el cual si es posible reparar 
+con el cual se tiene mucha mas informacion
+
+
+para poder actualizar el grub inhabilitado ... 
+
+usar colective.ai
+usar chatgpt4
+alternative 
+wormgpt
